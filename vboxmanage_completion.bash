@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 _vboxmanage_realopts() {
-    echo $(vboxmanage|grep -i vboxmanage|cut -d' ' -f2|grep '\['|tr -s '[\[\|\]\n' ' ')
+    echo $(vboxmanage|grep '^  \[' | cut -d' ' -f3 | cut -d']' -f1 |tr -s '[\|\]\n' ' ')
     echo " "
 }
 
@@ -95,7 +95,7 @@ __vboxmanage_controlvm() {
 
 __vboxmanage_default() {
     realopts=$(_vboxmanage_realopts)
-    opts=$realopts$(vboxmanage | grep -i vboxmanage | cut -d' ' -f2 | grep -v '\[' | sort | uniq)
+    opts=$realopts$(vboxmanage | grep  '^  [a-z]' | awk '{print $1}' | sort | uniq)
     pruned=""
 
     # echo ""
